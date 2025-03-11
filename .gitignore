@@ -56,3 +56,4 @@ data/raw/*
 # Others
 gitup.sh
 logs/*
+data/raw/repository_data.csv
