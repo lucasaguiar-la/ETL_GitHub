@@ -57,3 +57,4 @@ data/raw/*
 gitup.sh
 logs/*
 data/raw/repository_data.csv
+data_raw/repository_data.csv
