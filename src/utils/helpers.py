@@ -7,7 +7,7 @@ def setup_logging(log_file=None, level=logging.INFO):
     log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 
     if log_file:
-        log_dir = os.mpath.dirname(log_file)
+        log_dir = os.path.dirname(log_file)
         if log_dir:
             Path(log_dir).mkdir(parents=True, exist_ok=True)
 
