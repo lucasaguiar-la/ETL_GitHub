@@ -51,3 +51,6 @@ venv.bak/
 
 # Ignore data files
 data/raw/*
+
+# Others
+gitup.sh
