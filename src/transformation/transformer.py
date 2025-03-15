@@ -21,7 +21,7 @@ class DataTransformer:
         df = self.remove_outliners(df)'
         '''
 
-    def clean_data(df):
+    def clean_data(self, df):
         logging.info('Realizando a limpeza de dados.')
 
         try:
@@ -49,5 +49,20 @@ class DataTransformer:
 
             return df
         except Exception as e:
-            logging.error(f'Erro na etapa de limpeza de dados: {e}')
+            logging.error(f'Erro na etapa de limpeza de dados: {str(e)}')
             raise
+
+    def convert_data_types(self, df):
+        logging.info('Convertendo tipos de dados.')
+
+        date_columns = [col for col in df.columns if 'date' in col.lower() or 'time' in col.lower()]
+
+        for col in date_columns:
+            try:
+                df[col] = pd.to_datetime(df[col])
+                logging.info(f'Coluna {col} convertida para datetime')
+            except Exception as e:
+                logging.error(f'Erro na etapa de conversão de dados: {str(e)}')
+                raise
+
+        return df
