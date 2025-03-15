@@ -14,10 +14,10 @@ class DataTransformer:
         df = self.data.copy()
 
         df = self.clean_data(df)
-        # Todo
-        '''
         df = self.convert_data_types(df)
         df = self.create_feature(df)
+        # Todo
+        '''
         df = self.remove_outliners(df)'
         '''
 
@@ -64,5 +64,27 @@ class DataTransformer:
             except Exception as e:
                 logging.error(f'Erro na etapa de conversão de dados: {str(e)}')
                 raise
+
+        return df
+
+    def create_feature(self, df):
+        logging.info('Criando novas features.')
+
+        date_columns = df.select_dtypes(include=['datetime64']).columns
+
+        if len(date_columns) > 0:
+            try:
+                for col in date_columns:
+                    df[f'{col}_year'] = df[col].dt.year
+                    df[f'{col}_month'] = df[col].dt.month
+                    df[f'{col}_day_of_week'] = df[col].dt.dayofweek
+                    logging.info(f"Features de tempo criadas a partir da coluna '{col}'")
+            except Exception as e:
+                logging.error(f'Erro na etapa de feature de dados: {str(e)}')
+                raise
+
+        if 'stars' in df.columns:
+            df['is_popular'] = df['stars'] > df['stars'].median()
+            logging.info("Feature 'is_popular' criada baseada em 'stars")
 
         return df
