@@ -1,7 +1,5 @@
 import logging
 import pandas as pd
-import numpy as np
-from datetime import datetime
 
 class DataTransformer:
     def __init__(self, data):
@@ -14,12 +12,6 @@ class DataTransformer:
         df = self.data.copy()
 
         df = self.clean_data(df)
-        df = self.convert_data_types(df)
-        df = self.create_feature(df)
-        # Todo
-        '''
-        df = self.remove_outliners(df)'
-        '''
 
     def clean_data(self, df):
         logging.info('Realizando a limpeza de dados.')
@@ -51,40 +43,3 @@ class DataTransformer:
         except Exception as e:
             logging.error(f'Erro na etapa de limpeza de dados: {str(e)}')
             raise
-
-    def convert_data_types(self, df):
-        logging.info('Convertendo tipos de dados.')
-
-        date_columns = [col for col in df.columns if 'date' in col.lower() or 'time' in col.lower()]
-
-        for col in date_columns:
-            try:
-                df[col] = pd.to_datetime(df[col])
-                logging.info(f'Coluna {col} convertida para datetime')
-            except Exception as e:
-                logging.error(f'Erro na etapa de conversão de dados: {str(e)}')
-                raise
-
-        return df
-
-    def create_feature(self, df):
-        logging.info('Criando novas features.')
-
-        date_columns = df.select_dtypes(include=['datetime64']).columns
-
-        if len(date_columns) > 0:
-            try:
-                for col in date_columns:
-                    df[f'{col}_year'] = df[col].dt.year
-                    df[f'{col}_month'] = df[col].dt.month
-                    df[f'{col}_day_of_week'] = df[col].dt.dayofweek
-                    logging.info(f"Features de tempo criadas a partir da coluna '{col}'")
-            except Exception as e:
-                logging.error(f'Erro na etapa de feature de dados: {str(e)}')
-                raise
-
-        if 'stars' in df.columns:
-            df['is_popular'] = df['stars'] > df['stars'].median()
-            logging.info("Feature 'is_popular' criada baseada em 'stars")
-
-        return df

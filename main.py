@@ -1,5 +1,5 @@
 from datetime import datetime
-from src.utils.helpers import setup_logging
+from src.utils.logger import setup_logging
 from src.extraction.extractor import DataExtractor
 
 import logging
