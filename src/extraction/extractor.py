@@ -16,7 +16,7 @@ class DataExtractor:
                     raise FileNotFoundError(f'Arquivo não encontrado: {self.file_path}')
 
                 df = pd.read_csv(self.file_path)
-                self.logger.info(f'Arquivo lido com sucesso!\n{df.dtypes}')
+                self.logger.info('Arquivo lido com sucesso!')
                 self.logger.info(f'Colunas no dataset: {', '.join(df.columns.tolist())}')
                 self.logger.info(f'Tipos de dados: \n{df.dtypes}')
 

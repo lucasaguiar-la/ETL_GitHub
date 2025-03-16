@@ -1,3 +1,5 @@
+from config.config import FILTER_KEY
+
 import logging
 import pandas as pd
 
@@ -12,6 +14,11 @@ class DataTransformer:
         df = self.data.copy()
 
         df = self.clean_data(df)
+        df = self.apply_filter(df)
+        # TODO
+        '''
+        df = self.calculate_engagement(df)
+        '''
 
     def clean_data(self, df):
         logging.info('Realizando a limpeza de dados.')
@@ -43,3 +50,7 @@ class DataTransformer:
         except Exception as e:
             logging.error(f'Erro na etapa de limpeza de dados: {str(e)}')
             raise
+
+    def apply_filter(self, df):
+        logging.info(f'Aplicando filtro de linguagem: {FILTER_KEY}')
+        return df[df['primary_language'] == FILTER_KEY]
