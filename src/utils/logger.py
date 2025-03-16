@@ -25,7 +25,7 @@ def setup_logging(log_file=None, level=logging.INFO):
     logger = logging.getLogger('app_logger')
     logger.setLevel(level)
 
-    logging.getLogger('matplotlib').setlevel(logging.WARNING)
+    logging.getLogger('matplotlib').setLevel(logging.WARNING)
     logging.getLogger('pandas').setLevel(logging.WARNING)
 
     logging.info('Sistema de logging configurado com sucesso.')

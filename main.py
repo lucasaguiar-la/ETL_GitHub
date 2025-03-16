@@ -1,6 +1,7 @@
 from datetime import datetime
 from src.utils.logger import setup_logging
 from src.extraction.extractor import DataExtractor
+from src.transformation.transformer import DataTransformer
 
 import logging
 import os
@@ -17,9 +18,14 @@ def main():
 
     try:
         logger.info('Iniciando etapa de extração')
-        extractor = DataExtractor('data/raw/github_dataset.csv')
+        extractor = DataExtractor('data/raw/repository_data.csv') # DATASET ORIGINAL (mais pesasado)
+        # extractor = DataExtractor('data/raw/github_dataset.csv') # DATASET DE TESTES (mais leve)
         raw_data = extractor.extract()
         logger.info(f'Extração concluída. {len(raw_data)} registros encontrados.')
+
+        logger.info('Iniciando etapa de extração')
+        transformer = DataTransformer(raw_data)
+        processed_date = transformer.transform()
     
     except Exception as e:
         logger.error(f'Erro durante a execução do pipeline: {str(e)}')
