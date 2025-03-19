@@ -1,5 +1,9 @@
-import logging
 from pathlib import Path
+
+import os
+import shutil
+import logging
+import kagglehub
 import pandas as pd
 
 class DataExtractor:
@@ -8,6 +12,27 @@ class DataExtractor:
         self.logger = logging.getLogger('app_logger')
 
     def extract(self):
+        try:
+            path = kagglehub.dataset_download("nikhil25803/github-dataset")
+            dest_path = os.path.join("data\\raw\\", os.path.basename(path))
+            shutil.move(path, dest_path)
+
+            folder_path = os.path.join(dest_path)
+            if os.path.exists(folder_path) and os.path.isdir(folder_path):
+                for file_name in os.listdir(folder_path):
+                    src_file = os.path.join(folder_path, file_name)
+                    dest_file = os.path.join("data\\raw", file_name)
+                    shutil.move(src_file, dest_file)
+
+                os.rmdir(folder_path)
+                self.logger.info(f'Dataset salvo em: {dest_file}')
+
+                return True
+        except Exception as e:
+            self.logger.error(f'Algo deu errado ao baixar do dataset: {str(e)}')
+            raise False
+
+    def check_extraction(self):
             try:
                 self.logger.debug(f'Tentando ler o arquivo: {self.file_path}')
 

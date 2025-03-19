@@ -51,7 +51,16 @@ venv.bak/
 *.local
 
 # Ignore data files
-data/raw/*
+data/*/
+!data/
+data/raw/*/
+!data/raw/
+data/processed/*/
+!data/processed/
+data/final/*/
+!data/final/
+repository_data.csv
+github_dataset.csv
 
 # Others
 gitup.sh
