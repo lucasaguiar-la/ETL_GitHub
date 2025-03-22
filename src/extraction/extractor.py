@@ -42,7 +42,7 @@ class DataExtractor:
 
                 df = pd.read_csv(self.file_path)
                 self.logger.info('Arquivo lido com sucesso!')
-                self.logger.info(f'Colunas no dataset: {', '.join(df.columns.tolist())}')
+                self.logger.info(f"Colunas no dataset: {', '.join(df.columns.tolist())}")
                 self.logger.info(f'Tipos de dados: \n{df.dtypes}')
 
                 null_counts = df.isnull().sum()
