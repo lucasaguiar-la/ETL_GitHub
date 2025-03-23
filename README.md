@@ -51,8 +51,8 @@ projeto/
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/seu-usuario/nome-do-repo.git
-cd nome-do-repo
+git clone https://github.com/lucasaguiar-la/ETL_GitHub
+cd ETL_GitHub
 ```
 
 2. Crie e ative um ambiente virtual:
