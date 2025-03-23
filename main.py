@@ -9,8 +9,7 @@ import os
 import logging
 
 def main():
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-
+    # Configuração dos caminhos
     log_dir = os.path.join(config.LOG_DIR_PATH)
     data_dir = os.path.join(config.DATA_DIR_PATH)
 
@@ -41,20 +40,28 @@ def main():
     transformer = DataTransformer(raw_data)
 
     try:
-        if transformer.transform():
-            logging.info(f'Tratamento concluído com sucesso!')
+        transformer.transform()
+        transformed_data = transformer.get_data()
+
+        if transformed_data is not None and not transformed_data.empty:
+            logger.info(f'Tratamento concluído com sucesso!')
+        else:
+            logger.warning('O DataFrame resultante está vazio ou nulo após a transformação.')
     except Exception as e:
         logger.error(f'Erro durante o tratamento de dados: {str(e)}')
 
     # Etapa de CARREGAMENTO
-    logger.info('Iniciando a etapa de carregamento dos dados...')
-    loader = DataLoader(transformer)
+    if transformed_data is not None:
+        logger.info('Iniciando a etapa de carregamento dos dados...')
 
-    try:
-        if loader.load():
-            logging.info(f'Carregamento concluído com sucesso!')
-    except Exception as e:
-        logger.error(f'Erro durante o carregamento de dados: {str(e)}')
+        try:
+            dataset = DataLoader(transformed_data)
+            save_dataset = dataset.load(format='excel')
+
+            if save_dataset:
+                logger.info('Dados carregados com sucesso!')
+        except Exception as e:
+            logger.error(f'Erro durante o carregamento de dados: {str(e)}')
 
 if __name__ == '__main__':
     main()

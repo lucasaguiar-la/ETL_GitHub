@@ -7,23 +7,25 @@ import os
 class DataLoader:
     def __init__(self, data):
         self.data = data
+        self.output_dir = LOADER_OUTPUT_PATH
         self.logger = logging.getLogger('app_logger')
 
     def load(self, format='csv'):
-        output_dir = os.path.dirname(LOADER_OUTPUT_PATH)
-        Path(output_dir).mkdir(parents=True, exist_ok=True)
+        Path(self.output_dir).mkdir(parents=True, exist_ok=True)
+        self.logger.info(f'Salvando registros no formato: {format}')
 
-        self.logger.info(f'Salvando {len(self.data)} registros no formato: {format}')
+        for col in self.data.select_dtypes(include=['datetime64[ns, UTC]', 'datetimetz']).columns:
+            self.data[col] = self.data[col].dt.tz_localize(None)
 
         if format.lower() == 'csv':
-            self.data.to_csv(self.data, index=False)
-            logging.info(f'Dados salvos em: {self.output_dir}')
+            output_file = os.path.join(self.output_dir, 'output.csv')
+            self.data.to_csv(output_file, index=False)
+            self.logger.info(f'Dados salvos em: {output_file}')
         elif(format.lower() == 'excel'):
-            excel_path = self.data
-            if not excel_path.endswith(('.xlsx', '.xls')):
-                excel_path = os.path.splitext(self.data)[0] + '.xlsx'
-            self.data.to_excel(excel_path, index=False)
-            self.logger.info(f'Dados salvo em: {self.excel_path}')
+            excel_file = os.path.join(self.output_dir, 'output.xlsx')
+            self.data.to_excel(excel_file, index=False)
+            self.logger.info(f'Dados salvo em: {excel_file}')
         else:
             self.logger.error(f"Format '{format}' não suportado.")
             return False
+        return True

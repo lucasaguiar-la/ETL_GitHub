@@ -23,9 +23,17 @@ class DataTransformer:
         date_now = pd.Timestamp.now(tz='UTC')
         df['time_age'] = (date_now - df['created_at']).dt.days
 
-        df = self.clean_data(df)
-        df = self.apply_filter(df)
-        df = self.calculate_engagement(df)
+        try:
+            df = self.clean_data(df)
+            df = self.apply_filter(df)
+            df = self.calculate_engagement(df)
+
+            self.transformed_data = df
+            return df
+        except Exception as e:
+            self.logger.error(f'Erro ao executar etapas de tratamento: {str(e)}')
+            self.transformed_data = None
+            raise
 
     def clean_data(self, df):
         self.logger.info('Realizando a limpeza de dados.')
@@ -115,3 +123,6 @@ class DataTransformer:
         except Exception as e:
             self.logger.error(f'Erro no cálculo de métricas de engajamento: {str(e)}')
             raise
+
+    def get_data(self):
+        return self.transformed_data
