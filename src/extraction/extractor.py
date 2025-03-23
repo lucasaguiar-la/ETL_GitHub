@@ -7,21 +7,25 @@ import kagglehub
 import pandas as pd
 
 class DataExtractor:
-    def __init__(self, file_path):
+    def __init__(self, base_dir, file_path):
+        self.base_dir = base_dir
         self.file_path = file_path
+
+        self.raw_data_dir = os.path.join(self.base_dir, 'data', 'raw')
+
         self.logger = logging.getLogger('app_logger')
 
     def extract(self):
         try:
             path = kagglehub.dataset_download("nikhil25803/github-dataset")
-            dest_path = os.path.join("data\\raw\\", os.path.basename(path))
+            dest_path = os.path.join(self.raw_data_dir, os.path.basename(path))
             shutil.move(path, dest_path)
 
             folder_path = os.path.join(dest_path)
             if os.path.exists(folder_path) and os.path.isdir(folder_path):
                 for file_name in os.listdir(folder_path):
                     src_file = os.path.join(folder_path, file_name)
-                    dest_file = os.path.join("data\\raw", file_name)
+                    dest_file = os.path.join(self.raw_data_dir, file_name)
                     shutil.move(src_file, dest_file)
 
                 os.rmdir(folder_path)

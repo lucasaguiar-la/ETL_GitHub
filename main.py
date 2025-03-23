@@ -8,19 +8,25 @@ import logging
 import os
 
 def main():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+
+    log_dir = os.path.join(base_dir, 'logs')
+    data_dir = os.path.join(base_dir, 'data', 'raw')
+
+    os.makedirs(log_dir, exist_ok=True)
+    os.makedirs(data_dir, exist_ok=True)
+
     timestamp = datetime.now().strftime('%d%m%Y_%H%M%S')
-    log_file = f'logs\\pipeline_{timestamp}.log'
-    os.makedirs('logs', exist_ok=True)
+    log_file = os.path.join(log_dir, f'pipeline_{timestamp}.log')
 
     setup_logging(log_file)
-    logger = logging.getLogger('app_loger')
+    logger = logging.getLogger('app_logger')
 
-    file_path = 'data\\raw\\repository_data.csv'
-    os.makedirs("data", exist_ok=True)
+    file_path = os.path.join(data_dir, 'repository_data.csv')
 
     # Etapa de EXTRAÇÃO
     logger.info('Iniciando etapa de extração dos dados...')
-    extractor = DataExtractor(file_path)
+    extractor = DataExtractor(base_dir, file_path)
 
     try:
         if extractor.extract():
