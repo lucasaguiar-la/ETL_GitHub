@@ -75,7 +75,7 @@ class DataTransformer:
 
         try:        
             metrics_col = ['stars_count', 'forks_count', 'watchers', 'pull_requests', 'commit_count']
-            self.logger.info('Verificando e convertendo cols para tipos numéricos.')
+            self.logger.info('Verificando e convertendo colunas para tipos numéricos...')
             
             for col in metrics_col:
                 if col in df.columns:
@@ -88,10 +88,9 @@ class DataTransformer:
                     self.logger.warning(f"Coluna '{col}' não encontrada no DataFrame. Criando com zeros.")
                     df[col] = 0
 
-            self.logger.info('Normalizando métricas com log para lidar com outliers.')
+            self.logger.info('Normalizando métricas com log para lidar com outliers...')
             for col in metrics_col:
                 df[f'{col}_norm'] = np.log1p(df[col])
-                self.logger.info(f"Coluna '{col}': normalizada com log1p")
 
             if 'time_age' not in df.columns:
                 self.logger.warning("Coluna 'time_age' não encontrada. Criando com valor padrão 1.")
@@ -101,12 +100,12 @@ class DataTransformer:
                 df['time_age'] = df['time_age'].fillna(1)
                 df['time_age'] = df['time_age'].replace(0, 1)
 
-            self.logger.info('Calculando taxas por idade do projeto.')
+            self.logger.info('Calculando taxas por idade do projeto...')
             df['commit_rate'] = df['commit_count'] / df['time_age']
             df['pr_rate'] = df['pull_requests'] / df['time_age']
             df['fork_rate'] = df['forks_count'] / df['time_age']
 
-            self.logger.info('Calculando score final de engajamento com pesos.')
+            self.logger.info('Calculando score final de engajamento com pesos...')
             df['engagement_score'] = (
                 df['stars_count_norm'] * 0.35 +
                 df['forks_count_norm'] * 0.20 +
