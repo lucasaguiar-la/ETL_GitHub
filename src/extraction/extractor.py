@@ -1,3 +1,4 @@
+from config import config
 from pathlib import Path
 
 import os
@@ -7,12 +8,9 @@ import kagglehub
 import pandas as pd
 
 class DataExtractor:
-    def __init__(self, base_dir, file_path):
-        self.base_dir = base_dir
+    def __init__(self, file_path):
         self.file_path = file_path
-
-        self.raw_data_dir = os.path.join(self.base_dir, 'data', 'raw')
-
+        self.raw_data_dir = os.path.join(config.DATA_DIR_PATH)
         self.logger = logging.getLogger('app_logger')
 
     def extract(self):
