@@ -2,6 +2,7 @@ from datetime import datetime
 from src.utils.logger import setup_logging
 from src.extraction.extractor import DataExtractor
 from src.transformation.transformer import DataTransformer
+from src.loading.loader import DataLoader
 
 import logging
 import os
@@ -38,6 +39,15 @@ def main():
     except Exception as e:
         logger.error(f'Erro durante o tratamento de dados: {str(e)}')
 
+    # Etapa de CARREGAMENTO
+    #logger.info('Iniciando a etapa de carregamento dos dados...')
+    #loader = DataLoader(transformer)
+
+    #try:
+    #    if loader.load():
+    #        logging.info(f'Carregamento concluído com sucesso!')
+    #except Exception as e:
+    #    logger.error(f'Erro durante o carregamento de dados: {str(e)}')
 
 if __name__ == '__main__':
     main()
