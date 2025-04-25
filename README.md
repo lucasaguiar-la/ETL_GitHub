@@ -83,6 +83,14 @@ python main.py
 - Taxa de forks
 - Score de engajamento ponderado
 
+
+## TODO
+
+- [ ] Carregar resultados em banco de dados local
+- [ ] Extrair diretórios utilizando API do GitHub
+- [ ] Construir sistema de envio de relatório por e-mail
+- [ ] Orquestrar DAG com Airflow
+
 ## Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](./LICENSE) para mais detalhes.
